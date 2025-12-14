@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync - AI-Powered Health & Fitness Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --success: #4ade80;
+            --warning: #facc15;
+            --danger: #f87171;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --text: #1e293b;
+            --background: #f1f5f9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        nav a:hover, nav a:focus {
+            color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #3ab7db;
+            transform: translateY(-2px);
+            outline: none;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover, .btn-outline:focus {
+            background-color: white;
+            color: var(--primary);
+            outline: none;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 800 400"><rect fill="%234361ee" width="800" height="400"/><path fill="%233a0ca3" fill-opacity="0.2" d="M0 192L26.7 202.7C53.3 213 107 235 160 234.7C213.3 235 267 213 320 197.3C373.3 181 427 171 480 186.7C533.3 203 587 245 640 250.7C693.3 256 747 224 773.3 208L800 192L800 401L773.3 401C746.7 401 693 401 640 401C586.7 401 533 401 480 401C426.7 401 373 401 320 401C266.7 401 213 401 160 401C106.7 401 53 401 27 401L0 401Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.2rem;
+            color: var(--secondary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        /* Dashboard Section */
+        .dashboard {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background-color: var(--light-gray);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .tab-btn.active, .tab-btn:hover, .tab-btn:focus {
+            background-color: var(--primary);
+            color: white;
+            outline: none;
+        }
+        
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-card h3 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        /* Expanded Metrics Section */
+        .metrics {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .metric-goal {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--light-gray);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        /* Goals Section */
+        .goals {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .goals-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .goals-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .goal-card {
+            background: white;
+            border: 2px solid var(--light-gray);
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .goal-card h4 {
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Athlete Skills Section */
+        .athlete-skills {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .skills-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skills-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .skills-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .skill-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skill-card h3 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .skill-analysis {
+            margin-top: 20px;
+        }
+        
+        .analysis-result {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .analysis-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .analysis-metric:last-child {
+            margin-bottom: 0;
+        }
+        
+        .skill-video {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            background-color: var(--dark);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .video-btn {
+            padding: 10px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* AI Section */
+        .ai-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+        }
+        
+        .ai-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .ai-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .ai-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .ai-features {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .ai-features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ai-features i {
+            color: var(--accent);
+        }
+        
+        .ai-chatbot {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chatbot-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chatbot-messages {
+            height: 300px;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f8fafc;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+        
+        .bot-message {
+            background-color: white;
+            padding: 12px 18px;
+            border-radius: 18px 18px 18px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-message {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 18px 18px 0 18px;
+            margin-left: auto;
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 50px;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        .chatbot-input button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover, .footer-column a:focus {
+            color: var(--accent);
+            outline: none;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover, .social-icons a:focus {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+            outline: none;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+        
+        /* Accessibility Features */
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        
+        .skip-to-content:focus {
+            top: 0;
+        }
+        
+        .high-contrast {
+            filter: contrast(1.2);
+        }
+        
+        .text-large {
+            font-size: 1.2rem;
+        }
+        
+        .accessibility-tools {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .accessibility-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .accessibility-btn:hover, .accessibility-btn:focus {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for screen readers -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    
+    <!-- Accessibility Tools -->
+    <div class="accessibility-tools">
+        <button class="accessibility-btn" id="contrast-btn" aria-label="Toggle high contrast mode">
+            <i class="fas fa-adjust"></i>
+        </button>
+        <button class="accessibility-btn" id="text-size-btn" aria-label="Increase text size">
+            <i class="fas fa-text-height"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-heartbeat" aria-hidden="true"></i>
+                <span>Fitzyouth</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Workouts</a></li>
+                    <li><a href="#">Nutrition</a></li>
+                    <li><a href="#">Therapy</a></li>
+                    <li><a href="#">Athlete Skills</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button class="btn btn-outline">Log In</button>
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>AI-Powered Health & Fitness Tracking</h1>
+            <p>Sync your fitness devices, get personalized AI recommendations, and achieve your health goals with our all-in-one wellness platform.</p>
+            <button class="btn btn-primary">Get Started</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Comprehensive Health Tracking</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-walking" aria-hidden="true"></i>
+                    </div>
+                    <h3>Activity Tracking</h3>
+                    <p>Sync with Fitbit and other devices to track steps, distance, calories burned, and active minutes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bed" aria-hidden="true"></i>
+                    </div>
+                    <h3>Sleep Analysis</h3>
+                    <p>Monitor your sleep patterns, get insights on sleep quality, and receive tips for better rest.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils" aria-hidden="true"></i>
+                    </div>
+                    <h3>Nutrition Planning</h3>
+                    <p>Track your food intake, get personalized meal recommendations, and monitor your nutrition goals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-dumbbell" aria-hidden="true"></i>
+                    </div>
+                    <h3>Workout Plans</h3>
+                    <p>AI-generated workout routines tailored to your fitness level, goals, and available equipment.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md" aria-hidden="true"></i>
+                    </div>
+                    <h3>Therapy Integration</h3>
+                    <p>Specialized programs for injury recovery and chronic condition management with professional guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy" aria-hidden="true"></i>
+                    </div>
+                    <h3>Athlete Skill Development</h3>
+                    <p>AI-powered analysis of athletic movements to improve technique, prevent injuries, and maximize performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard" id="main-content">
+        <div class="container">
+            <h2 class="section-title">Your Health Dashboard</h2>
+            <div class="dashboard-tabs">
+                <button class="tab-btn active">Today</button>
+                <button class="tab-btn">Weekly</button>
+                <button class="tab-btn">Monthly</button>
+            </div>
+            <div class="dashboard-content">
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-walking" aria-hidden="true"></i> Activity Summary</h3>
+                    <div class="chart-container">
+                        <canvas id="activityChart" aria-label="Activity chart showing steps, distance, calories, and active minutes"></canvas>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-bed" aria-hidden="true"></i> Sleep Quality</h3>
+                    <div class="chart-container">
+                        <canvas id="sleepChart" aria-label="Sleep quality chart showing deep sleep, light sleep, REM, and awake time"></canvas>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-utensils" aria-hidden="true"></i> Nutrition Intake</h3>
+                    <div class="chart-container">
+                        <canvas id="nutritionChart" aria-label="Nutrition intake chart showing protein, carbs, fats, fiber, and sugar"></canvas>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-weight" aria-hidden="true"></i> Weight Management</h3>
+                    <div class="chart-container">
+                        <canvas id="weightChart" aria-label="Weight management chart showing weight progress over time"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Athlete Skills Section -->
+    <section class="athlete-skills">
+        <div class="container">
+            <h2 class="section-title">Athlete Skill Development</h2>
+            <div class="skills-tabs">
+                <button class="tab-btn active">Jump Analysis</button>
+                <button class="tab-btn">Running Form</button>
+                <button class="tab-btn">Strength Training</button>
+                <button class="tab-btn">Agility Drills</button>
+            </div>
+            <div class="skills-content">
+                <div class="skill-card">
+                    <h3><i class="fas fa-running" aria-hidden="true"></i> Vertical Jump Analysis</h3>
+                    <p>Record your jump to measure height, form, and power output. Our AI will analyze your technique and provide personalized feedback.</p>
+                    
+                    <div class="skill-video">
+                        <i class="fas fa-video" style="font-size: 3rem;"></i>
+                    </div>
+                    
+                    <div class="video-controls">
+                        <button class="video-btn" id="record-btn">
+                            <i class="fas fa-record-vinyl"></i> Record
+                        </button>
+                        <button class="video-btn" id="analyze-btn">
+                            <i class="fas fa-robot"></i> Analyze
+                        </button>
+                        <button class="video-btn" id="compare-btn">
+                            <i class="fas fa-exchange-alt"></i> Compare
+                        </button>
+                    </div>
+                    
+                    <div class="skill-analysis">
+                        <h4>Analysis Results</h4>
+                        <div class="analysis-result">
+                            <div class="analysis-metric">
+                                <span>Jump Height:</span>
+                                <span>24.3 inches</span>
+                            </div>
+                            <div class="analysis-metric">
+                                <span>Power Output:</span>
+                                <span>845 Watts</span>
+                            </div>
+                            <div class="analysis-metric">
+                                <span>Form Score:</span>
+                                <span>82/100</span>
+                            </div>
+                            <div class="analysis-metric">
+                                <span>Improvement Tips:</span>
+                                <span>Focus on arm swing and knee drive</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <h3><i class="fas fa-chart-line" aria-hidden="true"></i> Performance Tracking</h3>
+                    <p>Track your athletic progress over time with detailed analytics and personalized improvement plans.</p>
+                    
+                    <div class="chart-container">
+                        <canvas id="performanceChart" aria-label="Athletic performance progress chart"></canvas>
+                    </div>
+                    
+                    <div class="skill-analysis">
+                        <h4>Current Performance Metrics</h4>
+                        <div class="analysis-result">
+                            <div class="analysis-metric">
+                                <span>Vertical Jump:</span>
+                                <span>24.3 inches (+2.1" from last month)</span>
+                            </div>
+                            <div class="analysis-metric">
+                                <span>40-yard Dash:</span>
+                                <span>5.12 seconds (-0.3s from last month)</span>
+                            </div>
+                            <div class="analysis-metric">
+                                <span>Agility Score:</span>
+                                <span>78/100 (+5 points)</span>
+                            </div>
+                            <div class="analysis-metric">
+                                <span>Next Goal:</span>
+                                <span>26-inch vertical jump</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expanded Metrics Section -->
+    <section class="metrics">
+        <div class="container">
+            <h2 class="section-title">Detailed Health Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon">
+                            <i class="fas fa-walking" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Daily Activity</h3>
+                            <p>Last updated: 2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="metric-value">8,454 steps</div>
+                    <div class="metric-goal">
+                        <span>Goal: 10,000 steps</span>
+                        <span>84.5%</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon">
+                            <i class="fas fa-fire" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Calories Burned</h3>
+                            <p>Active calories</p>
+                        </div>
+                    </div>
+                    <div class="metric-value">420 kcal</div>
+                    <div class="metric-goal">
+                        <span>Goal: 500 kcal</span>
+                        <span>84%</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon">
+                            <i class="fas fa-heart" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Heart Rate</h3>
+                            <p>Resting heart rate</p>
+                        </div>
+                    </div>
+                    <div class="metric-value">62 bpm</div>
+                    <div class="metric-goal">
+                        <span>Goal: 60-100 bpm</span>
+                        <span>Healthy</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon">
+                            <i class="fas fa-moon" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Sleep</h3>
+                            <p>Last night</p>
+                        </div>
+                    </div>
+                    <div class="metric-value">7h 15m</div>
+                    <div class="metric-goal">
+                        <span>Goal: 8h</span>
+                        <span>90.6%</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon">
+                            <i class="fas fa-tint" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Hydration</h3>
+                            <p>Water intake</p>
+                        </div>
+                    </div>
+                    <div class="metric-value">1.8 L</div>
+                    <div class="metric-goal">
+                        <span>Goal: 2.5 L</span>
+                        <span>72%</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon">
+                            <i class="fas fa-weight" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Weight</h3>
+                            <p>Current weight</p>
+                        </div>
+                    </div>
+                    <div class="metric-value">72.5 kg</div>
+                    <div class="metric-goal">
+                        <span>Goal: 70 kg</span>
+                        <span>Progress: 85%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Goals Section -->
+    <section class="goals">
+        <div class="container">
+            <h2 class="section-title">Your Health Goals</h2>
+            <div class="goals-tabs">
+                <button class="tab-btn active">Daily</button>
+                <button class="tab-btn">Weekly</button>
+                <button class="tab-btn">Monthly</button>
+            </div>
+            <div class="goals-content">
+                <div class="goal-card">
+                    <h4><i class="fas fa-walking" aria-hidden="true"></i> Step Goal</h4>
+                    <p>10,000 steps per day</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 84.5%;">8,450/10,000</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <h4><i class="fas fa-fire" aria-hidden="true"></i> Calorie Burn</h4>
+                    <p>500 active calories per day</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 84%;">420/500</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <h4><i class="fas fa-moon" aria-hidden="true"></i> Sleep Goal</h4>
+                    <p>8 hours per night</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90.6%;">7h 15m/8h</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <h4><i class="fas fa-tint" aria-hidden="true"></i> Hydration Goal</h4>
+                    <p>2.5L water per day</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 72%;">1.8L/2.5L</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <h4><i class="fas fa-apple-alt" aria-hidden="true"></i> Nutrition Goal</h4>
+                    <p>Balance macronutrients</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 78%;">78%</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <h4><i class="fas fa-running" aria-hidden="true"></i> Athletic Performance</h4>
+                    <p>Improve vertical jump by 2 inches</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%;">1.3/2.0 inches</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Section -->
+    <section class="ai-section">
+        <div class="container ai-container">
+            <div class="ai-content">
+                <h2>AI-Powered Health Guidance</h2>
+                <p>Our advanced AI system analyzes your health data to provide personalized recommendations that evolve with your progress.</p>
+                <ul class="ai-features">
+                    <li><i class="fas fa-robot" aria-hidden="true"></i> Adaptive workout plans based on your performance</li>
+                    <li><i class="fas fa-apple-alt" aria-hidden="true"></i> Personalized nutrition recommendations</li>
+                    <li><i class="fas fa-brain" aria-hidden="true"></i> Continuous learning from your habits and preferences</li>
+                    <li><i class="fas fa-bell" aria-hidden="true"></i> Smart reminders to keep you on track</li>
+                    <li><i class="fas fa-chart-pie" aria-hidden="true"></i> Predictive analytics to forecast your progress</li>
+                    <li><i class="fas fa-video" aria-hidden="true"></i> On-device AI analysis of exercise form and technique</li>
+                </ul>
+                <button class="btn btn-outline">Explore AI Features</button>
+            </div>
+            <div class="ai-chatbot">
+                <div class="chatbot-header">
+                    <i class="fas fa-robot" aria-hidden="true"></i>
+                    <h3>Fitzyouth AI Assistant</h3>
+                </div>
+                <div class="chatbot-messages">
+                    <div class="message">
+                        <div class="bot-message">Hello! I'm your HealthSync AI assistant. How can I help you today?</div>
+                    </div>
+                    <div class="message">
+                        <div class="user-message">Can you analyze my jump technique?</div>
+                    </div>
+                    <div class="message">
+                        <div class="bot-message">I'd be happy to analyze your jump technique! Please record a video of your jump from the side view, and I'll provide feedback on your form, power output, and areas for improvement.</div>
+                    </div>
+                </div>
+                <div class="chatbot-input">
+                    <input type="text" placeholder="Ask me anything about health and fitness..." aria-label="Type your message for the AI assistant">
+                    <button aria-label="Send message"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Fitzyouth</h3>
+                    <p>Your all-in-one health and fitness tracking platform with AI-powered insights and recommendations.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Features</h3>
+                    <ul>
+                        <li><a href="#">Activity Tracking</a></li>
+                        <li><a href="#">Sleep Analysis</a></li>
+                        <li><a href="#">Nutrition Planning</a></li>
+                        <li><a href="#">Workout Plans</a></li>
+                        <li><a href="#">Athlete Skill Development</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter to get health tips and special offers.</p>
+                    <form>
+                        <input type="email" placeholder="Your email address" aria-label="Your email address" style="padding: 12px; width: 100%; margin-bottom: 10px; border-radius: 5px; border: none;">
+                        <button class="btn btn-primary" style="width: 100%;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 HealthSync. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Activity Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            const activityChart = new Chart(activityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Steps', 'Distance (km)', 'Calories', 'Active Minutes'],
+                    datasets: [{
+                        label: 'Today\'s Activity',
+                        data: [8454, 6.7, 420, 55],
+                        backgroundColor: [
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(76, 201, 240, 0.7)',
+                            'rgba(78, 222, 128, 0.7)',
+                            'rgba(250, 204, 21, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(67, 97, 238, 1)',
+                            'rgba(76, 201, 240, 1)',
+                            'rgba(78, 222, 128, 1)',
+                            'rgba(250, 204, 21, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Sleep Chart
+            const sleepCtx = document.getElementById('sleepChart').getContext('2d');
+            const sleepChart = new Chart(sleepCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Deep Sleep', 'Light Sleep', 'REM', 'Awake'],
+                    datasets: [{
+                        data: [2.5, 4, 1.5, 0.5],
+                        backgroundColor: [
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(76, 201, 240, 0.7)',
+                            'rgba(78, 222, 128, 0.7)',
+                            'rgba(250, 204, 21, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(67, 97, 238, 1)',
+                            'rgba(76, 201, 240, 1)',
+                            'rgba(78, 222, 128, 1)',
+                            'rgba(250, 204, 21, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Nutrition Chart
+            const nutritionCtx = document.getElementById('nutritionChart').getContext('2d');
+            const nutritionChart = new Chart(nutritionCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Protein', 'Carbs', 'Fats', 'Fiber', 'Sugar'],
+                    datasets: [{
+                        data: [30, 45, 25, 20, 15],
+                        backgroundColor: [
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(76, 201, 240, 0.7)',
+                            'rgba(78, 222, 128, 0.7)',
+                            'rgba(250, 204, 21, 0.7)',
+                            'rgba(248, 113, 113, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(67, 97, 238, 1)',
+                            'rgba(76, 201, 240, 1)',
+                            'rgba(78, 222, 128, 1)',
+                            'rgba(250, 204, 21, 1)',
+                            'rgba(248, 113, 113, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Weight Chart
+            const weightCtx = document.getElementById('weightChart').getContext('2d');
+            const weightChart = new Chart(weightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: [78, 76.5, 75, 74, 73.5, 73, 72.5],
+                        fill: false,
+                        borderColor: 'rgba(67, 97, 238, 1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [
+                        {
+                            label: 'Vertical Jump (inches)',
+                            data: [20.5, 21.2, 21.8, 22.5, 23.1, 23.6, 24.3],
+                            fill: false,
+                            borderColor: 'rgba(67, 97, 238, 1)',
+                            tension: 0.1
+                        },
+                        {
+                            label: '40-yd Dash (seconds)',
+                            data: [5.8, 5.6, 5.5, 5.4, 5.3, 5.2, 5.12],
+                            fill: false,
+                            borderColor: 'rgba(76, 201, 240, 1)',
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Find the parent section to only toggle tabs within that section
+                    const parentSection = button.closest('section');
+                    const sectionTabs = parentSection.querySelectorAll('.tab-btn');
+                    sectionTabs.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+
+            // Chatbot simulation
+            const chatInput = document.querySelector('.chatbot-input input');
+            const chatButton = document.querySelector('.chatbot-input button');
+            const chatMessages = document.querySelector('.chatbot-messages');
+
+            chatButton.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    // Add user message
+                    const userMessageDiv = document.createElement('div');
+                    userMessageDiv.className = 'message';
+                    userMessageDiv.innerHTML = `<div class="user-message">${message}</div>`;
+                    chatMessages.appendChild(userMessageDiv);
+                    
+                    // Clear input
+                    chatInput.value = '';
+                    
+                    // Simulate AI response
+                    setTimeout(() => {
+                        const botMessageDiv = document.createElement('div');
+                        botMessageDiv.className = 'message';
+                        
+                        let response = '';
+                        if (message.toLowerCase().includes('jump') || message.toLowerCase().includes('vertical')) {
+                            response = 'I can analyze your vertical jump technique! Record a video from the side view, and I\'ll measure your jump height, analyze your form, and provide personalized tips for improvement.';
+                        } else if (message.toLowerCase().includes('run') || message.toLowerCase().includes('sprint')) {
+                            response = 'I can analyze your running form! Record a video of yourself running, and I\'ll assess your technique, stride length, and provide recommendations to improve efficiency and prevent injuries.';
+                        } else if (message.toLowerCase().includes('exercise') || message.toLowerCase().includes('workout')) {
+                            response = 'I can help with exercise guidance! Tell me what equipment you have available and your fitness goals, and I\'ll create a personalized workout plan for you.';
+                        } else {
+                            response = `I understand you're asking about "${message}". As your AI health assistant, I can analyze your athletic performance, provide personalized training recommendations, and help you track your progress toward your fitness goals.`;
+                        }
+                        
+                        botMessageDiv.innerHTML = `<div class="bot-message">${response}</div>`;
+                        chatMessages.appendChild(botMessageDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 1000);
+                    
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            }
+
+            // Video analysis simulation
+            const recordBtn = document.getElementById('record-btn');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const compareBtn = document.getElementById('compare-btn');
+            
+            recordBtn.addEventListener('click', function() {
+                alert('Recording started... (This is a simulation. In a real app, this would access your camera.)');
+                setTimeout(function() {
+                    alert('Recording completed! Video saved for analysis.');
+                }, 2000);
+            });
+            
+            analyzeBtn.addEventListener('click', function() {
+                alert('Analyzing your exercise technique using AI...');
+                setTimeout(function() {
+                    document.querySelector('.skill-analysis').style.display = 'block';
+                    alert('Analysis complete! Check the results below.');
+                }, 3000);
+            });
+            
+            compareBtn.addEventListener('click', function() {
+                alert('Opening comparison view with professional athlete technique...');
+            });
+
+            // Accessibility features
+            const contrastBtn = document.getElementById('contrast-btn');
+            const textSizeBtn = document.getElementById('text-size-btn');
+            
+            contrastBtn.addEventListener('click', function() {
+                document.body.classList.toggle('high-contrast');
+            });
+            
+            textSizeBtn.addEventListener('click', function() {
+                document.body.classList.toggle('text-large');
+            });
+        });
+    </script>
+</body>
+</html>
